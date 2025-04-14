@@ -6,6 +6,7 @@ import CollapseItem from './components/Collapse/CollapseItem.vue'
 import Icon from './components/Icon/Icon.vue'
 import Tooltip from './components/Tooltip/Tooltip.vue'
 import Dropdown from './components/Dropdown/Dropdown.vue'
+import { createMessage } from './components/Message/method'
 import type { MenuOption } from './components/Dropdown/types'
 import type { ButtonInstance } from './components/Button/types'
 import type { TooltipInstance } from './components/Tooltip/types'
@@ -23,8 +24,7 @@ const options: MenuOption[] = [
 
 const onOpen = () => {
   console.log('open')
-  // alert('clicked')
-  // createMessage({ message: 'hello world', duration: 0, showClose: true })
+  createMessage({ message: 'hello world', duration: 0, showClose: true })
   tooltipRef.value?.show()
 }
 const close = () => {
@@ -37,6 +37,9 @@ const inlineConsole = (...args: any) => {
 }
 
 onMounted(() => {
+  createMessage({ message: 'hello world', showClose: true })
+  createMessage({ message: 'hello world again', duration: 0, type: 'success', showClose: true })
+  createMessage({ message: 'hello world three', duration: 0, type: 'danger', showClose: true })
   if (buttonRef.value) {
     // Access the buttonRef instance here
     console.log('buttonRef', buttonRef.value.ref)
