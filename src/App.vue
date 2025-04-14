@@ -1,25 +1,39 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, h } from 'vue'
 import Button from './components/Button/Button.vue'
 import Collapse from './components/Collapse/Collapse.vue'
 import CollapseItem from './components/Collapse/CollapseItem.vue'
 import Icon from './components/Icon/Icon.vue'
+import Tooltip from './components/Tooltip/Tooltip.vue'
+import Dropdown from './components/Dropdown/Dropdown.vue'
+import type { MenuOption } from './components/Dropdown/types'
 import type { ButtonInstance } from './components/Button/types'
-
+import type { TooltipInstance } from './components/Tooltip/types'
 
 const buttonRef = ref<ButtonInstance | null>(null)
+const tooltipRef = ref<TooltipInstance | null>(null)
 
 const openedValue = ref(['a'])
+const options: MenuOption[] = [
+  { key: 1, label: h('b', 'this is bold') },
+  { key: 2, label: 'item2', disabled: true },
+  { key: 3, label: 'item3', divided: true },
+  { key: 4, label: 'item4' },
+]
 
 const onOpen = () => {
   console.log('open')
   // alert('clicked')
   // createMessage({ message: 'hello world', duration: 0, showClose: true })
-  // tooltipRef.value?.show()
+  tooltipRef.value?.show()
 }
 const close = () => {
   console.log('open')
-  // tooltipRef.value?.hide()
+  tooltipRef.value?.hide()
+}
+
+const inlineConsole = (...args: any) => {
+  console.log(...args)
 }
 
 onMounted(() => {
@@ -32,6 +46,19 @@ onMounted(() => {
 
 <template>
   <main>
+    <Dropdown
+      placement="bottom"
+      trigger="click"
+      :menu-options="options"
+      @visible-change="(e) => inlineConsole('visible change', e)"
+      @select="(e) => inlineConsole('select', e)"
+      ref="tooltipRef"
+    >
+      <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+    </Dropdown>
+    <!-- <Tooltip trigger="hover" ref="tooltipRef" manual content="Tooltip Content" placement="bottom">
+      <Button @click="onOpen">Hover me</Button>
+    </Tooltip> -->
     <Icon icon="fa-solid fa-user-secret" type="primary" />
     <Button ref="buttonRef" @click="onOpen">Test Button1</Button>
     <Button plain @click="close">Plain Button close</Button>
@@ -55,13 +82,13 @@ onMounted(() => {
     <Collapse v-model="openedValue">
       <CollapseItem name="a" title="Title A">
         <h1>headline title</h1>
-        <div> this is content a aaa </div>
+        <div>this is content a aaa</div>
       </CollapseItem>
       <CollapseItem name="b" title="Title B">
-        <div> this is bbbbb test </div>
+        <div>this is bbbbb test</div>
       </CollapseItem>
       <CollapseItem name="c" title="Disabled Title" disabled>
-        <div> this is cccc test </div>
+        <div>this is cccc test</div>
       </CollapseItem>
     </Collapse>
     {{ openedValue }}
