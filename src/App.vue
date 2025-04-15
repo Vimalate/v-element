@@ -6,6 +6,7 @@ import CollapseItem from './components/Collapse/CollapseItem.vue'
 import Icon from './components/Icon/Icon.vue'
 import Tooltip from './components/Tooltip/Tooltip.vue'
 import Dropdown from './components/Dropdown/Dropdown.vue'
+import Input from './components/Input/Input.vue'
 import { createMessage } from './components/Message/method'
 import type { MenuOption } from './components/Dropdown/types'
 import type { ButtonInstance } from './components/Button/types'
@@ -31,6 +32,7 @@ const close = () => {
   console.log('open')
   tooltipRef.value?.hide()
 }
+const test = ref('')
 
 const inlineConsole = (...args: any) => {
   console.log(...args)
@@ -95,6 +97,7 @@ onMounted(() => {
       </CollapseItem>
     </Collapse>
     {{ openedValue }}
+    <Input v-model="test" clearable placeholder="输入字符以后可以点击清空"/>
   </main>
 </template>
 
