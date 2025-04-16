@@ -8,6 +8,7 @@ import Tooltip from './components/Tooltip/Tooltip.vue'
 import Dropdown from './components/Dropdown/Dropdown.vue'
 import Input from './components/Input/Input.vue'
 import Switch from '@/components/Switch/Switch.vue'
+import Select from './components/Select/Select.vue'
 import { createMessage } from './components/Message/method'
 import type { MenuOption } from './components/Dropdown/types'
 import type { ButtonInstance } from './components/Button/types'
@@ -25,6 +26,69 @@ const options: MenuOption[] = [
 ]
 
 const switchVal = ref(false)
+const test = ref('')
+
+const states = [
+  'Alabama',
+  'Alaska',
+  'Arizona',
+  'Arkansas',
+  'California',
+  'Colorado',
+  'Connecticut',
+  'Delaware',
+  'Florida',
+  'Georgia',
+  'Hawaii',
+  'Idaho',
+  'Illinois',
+  'Indiana',
+  'Iowa',
+  'Kansas',
+  'Kentucky',
+  'Louisiana',
+  'Maine',
+  'Maryland',
+  'Massachusetts',
+  'Michigan',
+  'Minnesota',
+  'Mississippi',
+  'Missouri',
+  'Montana',
+  'Nebraska',
+  'Nevada',
+  'New Hampshire',
+  'New Jersey',
+  'New Mexico',
+  'New York',
+  'North Carolina',
+  'North Dakota',
+  'Ohio',
+  'Oklahoma',
+  'Oregon',
+  'Pennsylvania',
+  'Rhode Island',
+  'South Carolina',
+  'South Dakota',
+  'Tennessee',
+  'Texas',
+  'Utah',
+  'Vermont',
+  'Virginia',
+  'Washington',
+  'West Virginia',
+  'Wisconsin',
+  'Wyoming',
+]
+
+const handleFetch = (query: any) => {
+  if (!query) return Promise.resolve([])
+  return fetch(`https://api.github.com/search/repositories?q=${query}`)
+  .then(res => res.json())
+  .then(( { items }) => {
+    return items.slice(0, 10).map((item: { name: any; node_id: any }) => ({ label: item.name, value: item.node_id }))
+  })
+}
 
 const onOpen = () => {
   console.log('open')
@@ -35,7 +99,7 @@ const close = () => {
   console.log('open')
   tooltipRef.value?.hide()
 }
-const test = ref('')
+const selectVal = ref('')
 
 const inlineConsole = (...args: any) => {
   console.log(...args)
@@ -102,6 +166,14 @@ onMounted(() => {
     {{ openedValue }}
     <Input v-model="test" clearable placeholder="输入字符以后可以点击清空"/>
     <Switch v-model="switchVal" activeText="ON" inactiveText="OFF"/>
+    <br />
+    <Select 
+    v-model="selectVal" 
+    placeholder="搜索远程结果"
+    filterable
+    remote
+    :remote-method="handleFetch"
+  />
   </main>
 </template>
 
